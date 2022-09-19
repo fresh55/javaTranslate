@@ -93,6 +93,7 @@ public class JezikController {
   @ResponseBody
   public void APIt() throws IOException, InterruptedException, JSONException {
 	jezikService.apiPrevood("haw");
+   
   }
 	
 
