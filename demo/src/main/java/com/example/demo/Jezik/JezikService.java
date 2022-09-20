@@ -7,22 +7,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
-
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.mashape.unirest.http.Unirest;
-
-import net.bytebuddy.implementation.bytecode.Throw;
-import okhttp3.FormBody;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Service
 public class JezikService {

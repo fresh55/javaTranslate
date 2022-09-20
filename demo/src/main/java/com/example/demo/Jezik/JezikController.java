@@ -1,24 +1,18 @@
 package com.example.demo.Jezik;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+
 
 @Controller
 public class JezikController {
@@ -31,7 +25,8 @@ public class JezikController {
 	@Autowired
 	private Environment environment;
 	
-	@GetMapping("/hello")
+	
+	@RequestMapping(path="/hello", method = RequestMethod.GET)
 	public ModelAndView getSporocilo1(@RequestParam(defaultValue = "en") String q) throws IOException, InterruptedException, JSONException {
        
 		  if (environment.acceptsProfiles(Profiles.of("api"))) {
@@ -53,7 +48,8 @@ public class JezikController {
 
 	// TODO PREVERI ALI JEZIK SPLOH OBSTAJA -DRUGAČE JAVI NAPAKO
 	//endpoint za hello - vzame parameter iz urlja in vrne string "hello world" zeljenega jezika
-	@GetMapping("/hello-rest")
+	
+	@RequestMapping(path="/hello-rest", method = RequestMethod.GET)
 	@ResponseBody
 	public String getSporocilo(@RequestParam(defaultValue = "en") String q) throws IOException, InterruptedException, JSONException {
 		//spremeni string v string z veliko zacetnico
@@ -71,25 +67,26 @@ public class JezikController {
 		
 	}
 
-	@GetMapping("/secure/hello")
 	
+	@RequestMapping(path="/secure/hello", method = RequestMethod.GET)
 	public String pojdiNaSecure() {
 		
 		return "secure";
 	}
 
-	@GetMapping("/ustvariJezik")
+	@RequestMapping(path="/ustvariJezik", method = RequestMethod.GET)
 	public String ustvari(Model model) {
 		model.addAttribute("objekt", new Jezik());
 		return "ustvariJezik";
 	}
 
-	@PostMapping("/ustvariJezik")
+	
+	@RequestMapping(path="/ustvariJezik", method = RequestMethod.POST)
   public void greetingSubmit(@ModelAttribute("objekt") Jezik noviJ) {
 	jezikService.addNewJezik(noviJ);
   }
 
-  @GetMapping("/API")
+  @RequestMapping(path="/API", method = RequestMethod.GET)
   @ResponseBody
   public void APIt() throws IOException, InterruptedException, JSONException {
 	jezikService.apiPrevood("haw");
