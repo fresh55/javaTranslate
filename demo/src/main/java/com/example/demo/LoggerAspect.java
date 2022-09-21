@@ -1,7 +1,5 @@
 package com.example.demo;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,46 +22,43 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Aspect
 @Component
 public class LoggerAspect {
-    
-	
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-    private ObjectMapper mapper;
+	private ObjectMapper mapper;
 
-	@Pointcut("execution(* com.example.demo.Jezik.JezikController.*(..))"+ "&& @annotation(org.springframework.web.bind.annotation.RequestMapping)")
+	@Pointcut("execution(* com.example.demo.Jezik.JezikController.*(..))"
+			+ "&& @annotation(org.springframework.web.bind.annotation.RequestMapping)")
 	public void pointcut() {
-    }
+	}
 
-    @Before("pointcut()")
+	@Before("pointcut()")
 	public void logMethod(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        RequestMapping mapping = signature.getMethod().getAnnotation(RequestMapping.class);
+		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+		RequestMapping mapping = signature.getMethod().getAnnotation(RequestMapping.class);
 
-        Map<String, Object> parameters = getParameters(joinPoint);
+		Map<String, Object> parameters = getParameters(joinPoint);
 
-        try {
-            logger.info("==> path(s): {}, method(s): {}, arguments: {} ",
-                    mapping.path(), mapping.method(), mapper.writeValueAsString(parameters));
-        } catch (JsonProcessingException e) {
-            logger.error("Error while converting", e);
-        }
-    }
-
-
-
+		try {
+			logger.info("==> path(s): {}, method(s): {}, arguments: {} ",
+					mapping.path(), mapping.method(), mapper.writeValueAsString(parameters));
+		} catch (JsonProcessingException e) {
+			logger.error("Error while converting", e);
+		}
+	}
 
 	private Map<String, Object> getParameters(JoinPoint joinPoint) {
-        CodeSignature signature = (CodeSignature) joinPoint.getSignature();
+		CodeSignature signature = (CodeSignature) joinPoint.getSignature();
 
-        HashMap<String, Object> map = new HashMap<>();
+		HashMap<String, Object> map = new HashMap<>();
 
-        String[] parameterNames = signature.getParameterNames();
+		String[] parameterNames = signature.getParameterNames();
 
-        for (int i = 0; i < parameterNames.length; i++) {
-            map.put(parameterNames[i], joinPoint.getArgs()[i]);
-        }
+		for (int i = 0; i < parameterNames.length; i++) {
+			map.put(parameterNames[i], joinPoint.getArgs()[i]);
+		}
 
-        return map;
-    }
+		return map;
+	}
 }

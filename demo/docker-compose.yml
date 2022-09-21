@@ -9,6 +9,23 @@ services:
       - postgres_db
     links:
       - postgres_db:database
+    environment:
+      - SPRING_PROFILES_ACTIVE=api
+      - server.address= 0.0.0.0
+      
+  api_service1:
+    build: .
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on:
+      - postgres_db
+    links:
+      - postgres_db:database
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - server.address= 0.0.0.0
+      
   postgres_db:
     image: "postgres:11.4"
     restart: always
@@ -16,4 +33,4 @@ services:
       - 5432:5432
     environment:
       POSTGRES_DB: jezik
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: nE5kMc7JCGNqwDQM
